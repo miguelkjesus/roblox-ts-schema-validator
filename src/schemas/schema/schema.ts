@@ -1,5 +1,5 @@
 import { checker, Checker } from "helpers/checker";
-import { parseResult, ParseResult, ParseSuccess } from "helpers/parse";
+import { parseResult, ParseResult } from "helpers/parse";
 import { Transformer } from "helpers/transformer";
 
 export interface SchemaCheck<Kind extends string = string, Args extends unknown[] = unknown[]> {
@@ -12,6 +12,7 @@ export type SchemaStep<T> = { kind: "check"; check: Checker<T> } | { kind: "tran
 export abstract class Schema<T = unknown, Def extends object = object> {
 	readonly $type!: T;
 	abstract readonly _def: Def;
+	description?: string;
 
 	protected steps: SchemaStep<T>[] = [];
 
@@ -67,5 +68,9 @@ export abstract class Schema<T = unknown, Def extends object = object> {
 
 	refine(func: (data: T) => boolean, message?: string) {
 		this.addCheck((data) => (func(data) ? checker.success() : checker.fail(message)));
+	}
+
+	describe(description: string) {
+		this.description = description;
 	}
 }
