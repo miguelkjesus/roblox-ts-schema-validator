@@ -25,7 +25,7 @@ export abstract class Schema<T = unknown, Def extends object = object> {
 
 	protected abstract _parse(data: unknown): ParseResult<T>;
 
-	parse(data: unknown): ParseResult<T> {
+	parse(data: unknown) {
 		let result = this._parse(data);
 		result = this.runSteps(result);
 

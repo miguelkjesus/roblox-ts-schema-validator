@@ -1,6 +1,6 @@
 import { CheckMessageOptions } from "helpers/checker";
 import { factory } from "helpers/factory";
-import { ParseResult, parseResult } from "helpers/parse";
+import { parseResult } from "helpers/parse";
 
 import { Schema } from "../schema/schema";
 
@@ -16,7 +16,7 @@ export class StringSchema extends Schema<string, StringSchemaDef> {
 		coerce: false,
 	};
 
-	protected _parse(data: unknown): ParseResult<string> {
+	protected _parse(data: unknown) {
 		if (this._def.coerce) {
 			data = tostring(data);
 		}
