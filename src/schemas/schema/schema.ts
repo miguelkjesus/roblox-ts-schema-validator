@@ -34,6 +34,15 @@ export abstract class Schema<T = unknown, Def extends object = object> {
 		return result;
 	}
 
+	check(data: unknown): data is T {
+		return this.parse(data).success;
+	}
+
+	assert(data: unknown): asserts data is T {
+		const result = this.parse(data);
+		assert(result.success, result.messages.join("\n"));
+	}
+
 	protected runSteps(result: ParseResult<T>) {
 		for (const step of this.steps) {
 			if (!result.success) return result;

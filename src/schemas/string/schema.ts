@@ -28,8 +28,8 @@ export class StringSchema extends Schema<string, StringSchemaDef> {
 		return parseResult.fail("Input is not a string");
 	}
 
-	coerce(value = true) {
-		this._def.coerce = value;
+	coerce() {
+		this._def.coerce = true;
 		return this;
 	}
 
