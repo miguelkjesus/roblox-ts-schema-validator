@@ -2,5 +2,7 @@
 /out
 /include
 
+**/dev-testing
+
 *.tsbuildinfo
 .DS_STORE
