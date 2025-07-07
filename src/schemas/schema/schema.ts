@@ -77,9 +77,16 @@ export abstract class Schema<T = unknown, Def extends object = object> {
 
 	refine(func: (data: T) => boolean, message?: string) {
 		this.addCheck((data) => (func(data) ? checker.success() : checker.fail(message)));
+		return this;
+	}
+
+	transform(func: (data: T) => T) {
+		this.addTransform(func);
+		return this;
 	}
 
 	describe(description: string) {
 		this.description = description;
+		return this;
 	}
 }
