@@ -2,10 +2,10 @@ import ParseContext, { ParseContextCallback } from "helpers/parse-context";
 import ErrorMessage from "helpers/error-message";
 import { PropertyKey } from "helpers/types";
 
-export type infer<T extends { $type: unknown }> = T["$type"];
+export type infer<T extends { "~type": unknown }> = T["~type"];
 
 export default abstract class Schema<T = unknown> {
-	readonly $type!: T;
+	readonly "~type"!: T;
 	description?: string;
 
 	private pipeline: ParseContextCallback<T>[] = [];
