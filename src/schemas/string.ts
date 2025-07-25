@@ -2,6 +2,7 @@ import { trim, trimEnd, trimStart } from "@rbxts/string-utils";
 
 import ParseContext from "helpers/parse-context";
 import ErrorMessage from "helpers/error-message";
+import CommonErrors from "helpers/common-errors";
 import factory from "helpers/factories";
 
 import Schema from "./schema";
@@ -9,7 +10,7 @@ import { OptionalSchema } from "./optional";
 
 export class StringSchema extends Schema<string> {
 	private _coerce = false;
-	private _invalidType = ErrorMessage.implement(({ data }) => `Expected string, recieved ${typeOf(data)}`);
+	private _invalidType = CommonErrors.expectedType("string");
 
 	protected preprocess(context: ParseContext) {
 		if (this._coerce) {
@@ -43,7 +44,7 @@ export class StringSchema extends Schema<string> {
 
 			ctx.addIssue({
 				type: "tooSmall",
-				error: error ?? `Expected string to be at least ${min} characters long, recieved ${length}`,
+				error: error ?? CommonErrors.tooShort(min),
 				inclusive: true,
 				min,
 			});
@@ -57,7 +58,7 @@ export class StringSchema extends Schema<string> {
 
 			ctx.addIssue({
 				type: "tooSmall",
-				error: error ?? `Expected string to be at most ${max} characters long, recieved ${length}`,
+				error: error ?? CommonErrors.tooLong(max),
 				inclusive: true,
 				max,
 			});

@@ -1,5 +1,6 @@
 import ParseContext, { ParseContextCallback } from "helpers/parse-context";
 import ErrorMessage from "helpers/error-message";
+import CommonErrors from "helpers/common-errors";
 import { PropertyKey } from "helpers/types";
 
 export type infer<T extends { "~type": unknown }> = T["~type"];
@@ -10,7 +11,7 @@ export default abstract class Schema<T = unknown> {
 	description?: string;
 
 	private pipeline: ParseContextCallback<T>[] = [];
-	private _required = ErrorMessage.implement(() => "Required field is missing");
+	private _required = CommonErrors.required();
 
 	protected abstract preprocess(context: ParseContext<unknown>): void;
 	protected process(context: ParseContext<T>) {}
