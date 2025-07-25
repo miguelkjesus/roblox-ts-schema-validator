@@ -8,8 +8,7 @@ import Schema from "./schema";
 
 export class StringSchema extends Schema<string> {
 	private _coerce = false;
-
-	private invalidTypeError = ErrorMessage.implement(({ data }) => `Expected string, recieved ${typeOf(data)}`);
+	private _invalidType = ErrorMessage.implement(({ data }) => `Expected string, recieved ${typeOf(data)}`);
 
 	protected preprocess(context: ParseContext) {
 		if (this._coerce) {
@@ -19,7 +18,7 @@ export class StringSchema extends Schema<string> {
 		if (!typeIs(context.data, "string")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this.invalidTypeError,
+				error: this._invalidType,
 			});
 		}
 	}
@@ -30,7 +29,7 @@ export class StringSchema extends Schema<string> {
 	}
 
 	invalidType(error: ErrorMessage) {
-		this.invalidTypeError = error;
+		this._invalidType = error;
 		return this;
 	}
 

@@ -1,6 +1,6 @@
 import ParseContext, { ParseContextCallback } from "helpers/parse-context";
 import ErrorMessage from "helpers/error-message";
-import { Dictionary, PropertyKey } from "helpers/types";
+import { PropertyKey } from "helpers/types";
 
 export type infer<T extends { $type: unknown }> = T["$type"];
 

@@ -5,12 +5,12 @@ import { Dictionary, PropertyKey } from "helpers/types";
 
 import Schema from "./schema";
 
-export type SchemasOf<T> = { [K in keyof T]: Schema<T[K]> };
+export type SchemasOf<T> = { [K in keyof T]: Schema<T[K]> } & {};
 
 export class InterfaceSchema<T extends Dictionary> extends Schema<T> {
-	private shape: SchemasOf<T>;
+	readonly shape: SchemasOf<T>;
 
-	private invalidTypeError = ErrorMessage.implement(({ data }) => `Expected table, recieved ${typeOf(data)}`);
+	private _invalidType = ErrorMessage.implement(({ data }) => `Expected table, recieved ${typeOf(data)}`);
 
 	constructor(shape: SchemasOf<T>) {
 		super();
@@ -21,7 +21,7 @@ export class InterfaceSchema<T extends Dictionary> extends Schema<T> {
 		if (!typeIs(context.data, "table")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this.invalidTypeError,
+				error: this._invalidType,
 			});
 		}
 	}
@@ -40,7 +40,7 @@ export class InterfaceSchema<T extends Dictionary> extends Schema<T> {
 	}
 
 	invalidType(error: ErrorMessage) {
-		this.invalidTypeError = error;
+		this._invalidType = error;
 		return this;
 	}
 }

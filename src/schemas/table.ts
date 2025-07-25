@@ -5,19 +5,19 @@ import factory from "helpers/factories";
 import Schema from "./schema";
 
 export class TableSchema extends Schema<object> {
-	private invalidTypeError = ErrorMessage.implement(({ data }) => `Expected table, recieved ${data}`);
+	private _invalidType = ErrorMessage.implement(({ data }) => `Expected table, recieved ${data}`);
 
 	protected preprocess(context: ParseContext) {
 		if (!typeIs(context.data, "table")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this.invalidTypeError,
+				error: this._invalidType,
 			});
 		}
 	}
 
 	invalidType(error: ErrorMessage) {
-		this.invalidTypeError = error;
+		this._invalidType = error;
 		return this;
 	}
 }
