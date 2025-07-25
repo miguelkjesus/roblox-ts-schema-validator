@@ -1,5 +1,5 @@
 {
-  "name": "@rbxts/rod",
+  "name": "@rbxts/schema",
   "version": "1.0.0",
   "main": "out/init.lua",
   "scripts": {
@@ -33,5 +33,8 @@
     "roblox-ts": "^3.0.0",
     "typescript": "^5.8.3",
     "zod": "^3.25.74"
+  },
+  "dependencies": {
+    "@rbxts/string-utils": "^1.0.3"
   }
 }
