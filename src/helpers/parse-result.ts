@@ -11,4 +11,8 @@ export class ParseResult<T = unknown> {
 		this.issues = issues;
 		this.success = isEmpty(issues);
 	}
+
+	messages() {
+		return this.issues.map((issue) => issue.error);
+	}
 }

@@ -38,7 +38,7 @@ export default abstract class Schema<T = unknown> {
 
 	assert(data: unknown): asserts data is T {
 		const result = this.parse(data);
-		assert(result.success, result.issues.join("\n"));
+		assert(result.success, result.messages().join("\n"));
 	}
 
 	private async runPipeline(context: ParseContext<T>) {
