@@ -44,7 +44,7 @@ export class StringSchema extends Schema<string> {
 
 			ctx.addIssue({
 				type: "tooSmall",
-				message: message ?? CommonErrors.tooShort(min),
+				message: message ?? CommonErrors.tooShortString(min),
 				inclusive: true,
 				min,
 			});
@@ -58,7 +58,7 @@ export class StringSchema extends Schema<string> {
 
 			ctx.addIssue({
 				type: "tooSmall",
-				message: message ?? CommonErrors.tooLong(max),
+				message: message ?? CommonErrors.tooLongString(max),
 				inclusive: true,
 				max,
 			});

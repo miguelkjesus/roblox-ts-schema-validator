@@ -42,6 +42,14 @@ export interface Required<T = unknown> extends Base<T> {
 	type: "required";
 }
 
+export interface NotInteger<T = unknown> extends Base<T> {
+	type: "notInteger";
+}
+
+export interface NotFinite<T = unknown> extends Base<T> {
+	type: "notFinite";
+}
+
 export type Core<T = unknown> =
 	| Custom<T>
 	| InvalidType<T>
@@ -49,4 +57,6 @@ export type Core<T = unknown> =
 	| InvalidLiteral<T>
 	| TooSmall<T>
 	| TooBig<T>
-	| Required<T>;
+	| Required<T>
+	| NotInteger<T>
+	| NotFinite<T>;
