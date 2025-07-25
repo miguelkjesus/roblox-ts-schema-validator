@@ -6,14 +6,24 @@ export type infer<T extends { "~type": unknown }> = T["~type"];
 
 export default abstract class Schema<T = unknown> {
 	readonly "~type"!: T;
+
 	description?: string;
 
 	private pipeline: ParseContextCallback<T>[] = [];
+	private _required = ErrorMessage.implement(() => "Required field is missing");
 
 	protected abstract preprocess(context: ParseContext<unknown>): void;
 	protected process(context: ParseContext<T>) {}
 
 	private isValidInput(context: ParseContext<unknown>): context is ParseContext<T> {
+		if (context.data === undefined) {
+			context.addIssue({
+				type: "required",
+				error: this._required,
+			});
+			return false;
+		}
+
 		this.preprocess(context);
 		return context.success();
 	}
@@ -71,6 +81,11 @@ export default abstract class Schema<T = unknown> {
 
 	describe(description: string) {
 		this.description = description;
+		return this;
+	}
+
+	required(error: ErrorMessage) {
+		this._required = error;
 		return this;
 	}
 

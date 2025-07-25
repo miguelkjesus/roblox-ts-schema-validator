@@ -38,10 +38,15 @@ export interface TooBig<T = unknown> extends Base<T> {
 	inclusive: boolean;
 }
 
+export interface Required<T = unknown> extends Base<T> {
+	type: "required";
+}
+
 export type Core<T = unknown> =
 	| Custom<T>
 	| InvalidType<T>
 	| InvalidInstance<T>
 	| InvalidLiteral<T>
 	| TooSmall<T>
-	| TooBig<T>;
+	| TooBig<T>
+	| Required<T>;

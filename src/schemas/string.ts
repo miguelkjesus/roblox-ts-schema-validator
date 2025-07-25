@@ -5,6 +5,7 @@ import ErrorMessage from "helpers/error-message";
 import factory from "helpers/factories";
 
 import Schema from "./schema";
+import { OptionalSchema } from "./optional";
 
 export class StringSchema extends Schema<string> {
 	private _coerce = false;
@@ -75,6 +76,10 @@ export class StringSchema extends Schema<string> {
 
 	trimEnd() {
 		return this.transform(trimEnd);
+	}
+
+	optional() {
+		return new OptionalSchema(this);
 	}
 }
 
