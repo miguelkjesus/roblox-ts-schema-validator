@@ -20,7 +20,7 @@ export class StringSchema extends Schema<string> {
 		if (!typeIs(context.data, "string")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this._invalidType,
+				message: this._invalidType,
 			});
 		}
 	}
@@ -30,35 +30,35 @@ export class StringSchema extends Schema<string> {
 		return this;
 	}
 
-	invalidType(error: ErrorMessage) {
-		this._invalidType = error;
+	invalidType(message: ErrorMessage) {
+		this._invalidType = message;
 		return this;
 	}
 
 	// Checkers
 
-	minLength(min: number, error?: ErrorMessage<string>) {
+	minLength(min: number, message?: ErrorMessage<string>) {
 		return this.use((ctx) => {
 			const length = ctx.data.size();
 			if (length >= min) return;
 
 			ctx.addIssue({
 				type: "tooSmall",
-				error: error ?? CommonErrors.tooShort(min),
+				message: message ?? CommonErrors.tooShort(min),
 				inclusive: true,
 				min,
 			});
 		});
 	}
 
-	maxLength(max: number, error?: ErrorMessage<string>) {
+	maxLength(max: number, message?: ErrorMessage<string>) {
 		return this.use((ctx) => {
 			const length = ctx.data.size();
 			if (length >= max) return;
 
 			ctx.addIssue({
 				type: "tooSmall",
-				error: error ?? CommonErrors.tooLong(max),
+				message: message ?? CommonErrors.tooLong(max),
 				inclusive: true,
 				max,
 			});
@@ -84,4 +84,5 @@ export class StringSchema extends Schema<string> {
 	}
 }
 
-export const string = factory.constructor(StringSchema);
+const stringConstructor = factory.constructor(StringSchema);
+export { stringConstructor as string };

@@ -13,6 +13,6 @@ export class ParseResult<T = unknown> {
 	}
 
 	messages() {
-		return this.issues.map((issue) => issue.error);
+		return this.issues.map((issue) => issue.message);
 	}
 }

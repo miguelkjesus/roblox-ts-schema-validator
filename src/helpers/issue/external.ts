@@ -2,7 +2,7 @@ import { PropertyKey } from "helpers/types";
 
 export interface Base<T = unknown> {
 	type: string;
-	error: string;
+	message: string;
 	recieved: T;
 	path: readonly PropertyKey[];
 }

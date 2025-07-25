@@ -20,7 +20,7 @@ export default abstract class Schema<T = unknown> {
 		if (context.data === undefined) {
 			context.addIssue({
 				type: "required",
-				error: this._required,
+				message: this._required,
 			});
 			return false;
 		}
@@ -66,10 +66,10 @@ export default abstract class Schema<T = unknown> {
 		return this;
 	}
 
-	refine(validate: (data: T) => boolean, error: ErrorMessage<T> = "") {
+	refine(validate: (data: T) => boolean, message: ErrorMessage<T> = "") {
 		return this.use((context) => {
 			if (!validate(context.data)) {
-				context.addIssue({ type: "custom", error });
+				context.addIssue({ type: "custom", message });
 			}
 		});
 	}
@@ -85,8 +85,8 @@ export default abstract class Schema<T = unknown> {
 		return this;
 	}
 
-	required(error: ErrorMessage) {
-		this._required = error;
+	required(message: ErrorMessage) {
+		this._required = message;
 		return this;
 	}
 

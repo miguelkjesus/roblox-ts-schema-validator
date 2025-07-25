@@ -11,15 +11,16 @@ export class TableSchema extends Schema<object> {
 		if (!typeIs(context.data, "table")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this._invalidType,
+				message: this._invalidType,
 			});
 		}
 	}
 
-	invalidType(error: ErrorMessage) {
-		this._invalidType = error;
+	invalidType(message: ErrorMessage) {
+		this._invalidType = message;
 		return this;
 	}
 }
 
-export const table = factory.constructor(TableSchema);
+const tableConstructor = factory.constructor(TableSchema);
+export { tableConstructor as table };

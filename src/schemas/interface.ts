@@ -21,7 +21,7 @@ export class InterfaceSchema<T extends Dictionary> extends Schema<T> {
 		if (!typeIs(context.data, "table")) {
 			context.addIssue({
 				type: "invalidType",
-				error: this._invalidType,
+				message: this._invalidType,
 			});
 		}
 	}
@@ -39,11 +39,11 @@ export class InterfaceSchema<T extends Dictionary> extends Schema<T> {
 		}
 	}
 
-	invalidType(error: ErrorMessage) {
-		this._invalidType = error;
+	invalidType(message: ErrorMessage) {
+		this._invalidType = message;
 		return this;
 	}
 }
 
-// @ts-expect-error interface is a reserved keyword, but need this for compatibility with @rbxts/t
-export const interface = factory.constructor(InterfaceSchema);
+const interfaceConstructor = factory.constructor(InterfaceSchema);
+export { interfaceConstructor as interface };

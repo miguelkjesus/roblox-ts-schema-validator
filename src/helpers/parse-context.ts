@@ -7,7 +7,7 @@ import { PropertyKey, Suggest } from "./types";
 export type IssueParams<T> =
 	Issue.Core<T> extends infer U
 		? U extends Issue.Base<T>
-			? Omit<U, "recieved" | "path" | "error" | "type"> & { type: Suggest<U["type"]>; error: ErrorMessage<T> }
+			? Omit<U, "recieved" | "path" | "message" | "type"> & { type: Suggest<U["type"]>; message: ErrorMessage<T> }
 			: never
 		: never;
 
@@ -32,7 +32,7 @@ export default class ParseContext<T = unknown> {
 			...issue,
 			recieved: this.data,
 			path: this.path,
-			error: ErrorMessage.resolve(issue.error, this),
+			message: ErrorMessage.resolve(issue.message, this),
 		});
 	}
 

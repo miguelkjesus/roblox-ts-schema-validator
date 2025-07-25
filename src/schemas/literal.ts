@@ -18,13 +18,13 @@ export class LiteralSchema<const T> extends Schema<T> {
 		if (context.data !== this.value) {
 			context.addIssue({
 				type: "invalidLiteral",
-				error: this.invalidLiteralError,
+				message: this.invalidLiteralError,
 			});
 		}
 	}
 
-	invalidLiteral(error: ErrorMessage) {
-		this.invalidLiteralError = error;
+	invalidLiteral(message: ErrorMessage) {
+		this.invalidLiteralError = message;
 		return this;
 	}
 }
