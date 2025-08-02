@@ -6,22 +6,24 @@ A runtime type-checking library for roblox-ts, inspired by Zod. It provides decl
 
 ```typescript
 // Define a schema
-const UserSchema = r.interface({
-	id: r.string(),
-	username: r.string().minLength(3),
-	age: r.number().min(13).max(120),
-	premium: r.string().optional(),
+const CustomServerOptions = r.interface({
+	title: r.string().trim().min(3, "Server title too short").max(50, "Server title too long"),
+	capacity: r.number().min(1).max(8),
+	joinPermissions: r.enum(["all", "friendsOnly", "inviteOnly"]),
 });
 
 // Infer TypeScript type
-type User = r.infer<typeof UserSchema>;
-// Result: { id: string; username: string; age: number; premium?: string }
+type CustomServerOptions = r.infer<typeof UserSchema>;
+// Result: { title: string; capacity: number; joinPermissions: "all" | "friendsOnly" | "inviteOnly" }
 
-// Validate data
-const result = UserSchema.parse(someUserData);
-if (result.success) {
-	print("Valid user:", result.data.username);
-} else {
-	print("Errors:", result.messages().join(", "));
-}
+// Validate data (e.g. in a remote event/function)
+TryCreateServer.OnServerInvoke = (player, args) => {
+	const { value, success, issues } = CustomServerOptions.parse(args);
+
+	if (!success) {
+		return issues;
+	}
+
+	// ...
+} 
 ```
