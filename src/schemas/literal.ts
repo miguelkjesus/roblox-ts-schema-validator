@@ -1,13 +1,14 @@
-import ParseContext from "helpers/parse-context";
-import ErrorMessage from "helpers/error-message";
-import factory from "helpers/factories";
+import { ParseContext } from "helpers/parse-context";
+import { ErrorMessage } from "helpers/error-message";
+import { Factory } from "helpers/factories";
 
-import Schema from "./schema";
+import { Schema } from "./schema";
+import { CommonErrorMessages } from "helpers/common-error-messages";
 
 export class LiteralSchema<const T> extends Schema<T> {
 	private readonly value: T;
 
-	private invalidLiteralError = ErrorMessage.implement((ctx) => `Expected ${this.value}, recieved ${ctx.data}.`);
+	private invalidLiteralError?: ErrorMessage;
 
 	constructor(value: T) {
 		super();
@@ -18,7 +19,7 @@ export class LiteralSchema<const T> extends Schema<T> {
 		if (context.data !== this.value) {
 			context.addIssue({
 				type: "invalidLiteral",
-				message: this.invalidLiteralError,
+				message: this.invalidLiteralError ?? CommonErrorMessages.expectedLiteral(this.value),
 			});
 		}
 	}
@@ -29,4 +30,4 @@ export class LiteralSchema<const T> extends Schema<T> {
 	}
 }
 
-export const literal = factory.constructor(LiteralSchema);
+export const literal = Factory.schema(LiteralSchema);

@@ -50,6 +50,11 @@ export interface NotFinite<T = unknown> extends Base<T> {
 	type: "notFinite";
 }
 
+export interface InvalidEnumValue<T = unknown> extends Base<T> {
+	type: "invalidEnumValue";
+	expected: readonly unknown[];
+}
+
 export type Core<T = unknown> =
 	| Custom<T>
 	| InvalidType<T>
@@ -59,4 +64,5 @@ export type Core<T = unknown> =
 	| TooBig<T>
 	| Required<T>
 	| NotInteger<T>
-	| NotFinite<T>;
+	| NotFinite<T>
+	| InvalidEnumValue<T>;

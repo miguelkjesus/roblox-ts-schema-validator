@@ -1,8 +1,11 @@
-const factory = {
-	constructor:
-		<Args extends unknown[], Return>(schema: new (...args: Args) => Return) =>
-		(...args: Args) =>
-			new schema(...args),
+import { isAsync, async, sync } from "./schema-types";
+
+const Factory = {
+	schema<Args extends unknown[], Schema>(schema: new (...args: Args) => Schema) {
+		return (...args: Args) => new schema(...args) as isAsync<Schema> extends true ? async<Schema> : sync<Schema>;
+	},
 };
 
-export default factory;
+type Factory = typeof Factory;
+
+export { Factory };

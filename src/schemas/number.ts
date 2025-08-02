@@ -1,14 +1,13 @@
-import ParseContext from "helpers/parse-context";
-import ErrorMessage from "helpers/error-message";
-import CommonErrors from "helpers/common-errors";
-import factory from "helpers/factories";
+import { ParseContext } from "helpers/parse-context";
+import { ErrorMessage } from "helpers/error-message";
+import { CommonErrorMessages } from "helpers/common-error-messages";
 
-import Schema from "./schema";
-import { OptionalSchema } from "./optional";
+import { Schema } from "./schema";
+import { Factory } from "helpers/factories";
 
 export class NumberSchema extends Schema<number> {
 	private _coerce = false;
-	private _invalidType = CommonErrors.expectedType("number");
+	private _invalidType = CommonErrorMessages.expectedType("number");
 
 	protected preprocess(context: ParseContext) {
 		if (this._coerce) {
@@ -42,7 +41,7 @@ export class NumberSchema extends Schema<number> {
 
 			ctx.addIssue({
 				type: "tooSmall",
-				message: message ?? CommonErrors.tooSmallNumber(minimum, inclusive),
+				message: message ?? CommonErrorMessages.tooSmallNumber(minimum, inclusive),
 				inclusive,
 				min: minimum,
 			});
@@ -56,7 +55,7 @@ export class NumberSchema extends Schema<number> {
 
 			ctx.addIssue({
 				type: "tooBig",
-				message: message ?? CommonErrors.tooBigNumber(maximum, inclusive),
+				message: message ?? CommonErrorMessages.tooBigNumber(maximum, inclusive),
 				inclusive,
 				max: maximum,
 			});
@@ -69,7 +68,7 @@ export class NumberSchema extends Schema<number> {
 
 			ctx.addIssue({
 				type: "notInteger",
-				message: message ?? CommonErrors.notInteger(),
+				message: message ?? CommonErrorMessages.notInteger,
 			});
 		});
 	}
@@ -80,7 +79,7 @@ export class NumberSchema extends Schema<number> {
 
 			ctx.addIssue({
 				type: "notFinite",
-				message: message ?? CommonErrors.notFinite(),
+				message: message ?? CommonErrorMessages.notFinite,
 			});
 		});
 	}
@@ -102,11 +101,7 @@ export class NumberSchema extends Schema<number> {
 	abs() {
 		return this.transform(math.abs);
 	}
-
-	optional() {
-		return new OptionalSchema(this);
-	}
 }
 
-const numberConstructor = factory.constructor(NumberSchema);
+const numberConstructor = Factory.schema(NumberSchema);
 export { numberConstructor as number };

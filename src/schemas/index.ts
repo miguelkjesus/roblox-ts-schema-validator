@@ -1,6 +1,7 @@
 export * from "./schema";
-export { default as Schema } from "./schema";
+export { Schema } from "./schema";
 
+export * from "./enum";
 export * from "./interface";
 export * from "./literal";
 export * from "./number";

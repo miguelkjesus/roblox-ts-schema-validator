@@ -1,4 +1,5 @@
-import Issue from "./issue";
+import { Issue } from "./issue";
+import { isAsync } from "./schema-types";
 import { isEmpty } from "./table";
 
 export class ParseResult<T = unknown> {
@@ -16,3 +17,10 @@ export class ParseResult<T = unknown> {
 		return this.issues.map((issue) => issue.message);
 	}
 }
+
+export type MaybeAsyncParseResult<T> =
+	isAsync<T> extends true
+		? Promise<ParseResult<T>>
+		: isAsync<T> extends false
+			? ParseResult<T>
+			: Promise<ParseResult<T>> | ParseResult<T>;

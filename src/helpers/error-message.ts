@@ -1,9 +1,9 @@
-import ParseContext from "./parse-context";
+import { ParseContext } from "./parse-context";
 
-type ErrorMessage<T = unknown> = string | ((context: ParseContext) => string);
+export type ErrorMessage<T = unknown> = string | ((context: ParseContext<T>) => string);
 
-namespace ErrorMessage {
-	export function resolve(message: ErrorMessage, context: ParseContext) {
+export namespace ErrorMessage {
+	export function resolve<T>(message: ErrorMessage<T>, context: ParseContext<T>) {
 		return typeIs(message, "string") ? message : message(context);
 	}
 
@@ -11,5 +11,3 @@ namespace ErrorMessage {
 		return message;
 	}
 }
-
-export default ErrorMessage;

@@ -1,19 +1,25 @@
-import ErrorMessage from "./error-message";
-import Issue from "./issue";
+import { ErrorMessage } from "./error-message";
+import { Issue } from "./issue";
 import { ParseResult } from "./parse-result";
 import { isEmpty } from "./table";
-import { PropertyKey, Suggest } from "./types";
+import { conditional, PropertyKey, Suggest } from "./types";
 
-export type IssueParams<T> =
-	Issue.Core<T> extends infer U
-		? U extends Issue.Base<T>
-			? Omit<U, "recieved" | "path" | "message" | "type"> & { type: Suggest<U["type"]>; message: ErrorMessage<T> }
-			: never
-		: never;
+export type IssueParams = Issue.Core extends infer U
+	? U extends Issue.Base
+		? Omit<U, "recieved" | "path" | "message" | "type"> & {
+				type: Suggest<U["type"]>;
+				message: ErrorMessage<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+			}
+		: never
+	: never;
 
-export type ParseContextCallback<T> = (context: ParseContext<T>) => void | Promise<void>;
+export type ParseContextCallback<T, isAsync extends boolean = boolean> = (
+	context: ParseContext<T>,
+) => conditional<isAsync, Promise<void>, void>;
+export type AsyncParseContextCallback<T> = (context: ParseContext<T>) => Promise<void>;
+export type SyncParseContextCallback<T> = (context: ParseContext<T>) => void;
 
-export default class ParseContext<T = unknown> {
+export class ParseContext<T = unknown> {
 	data: T;
 	readonly issues: Issue.Base<unknown>[] = [];
 	readonly path: readonly PropertyKey[];
@@ -27,7 +33,7 @@ export default class ParseContext<T = unknown> {
 		return isEmpty(this.issues);
 	}
 
-	addIssue<U, I extends IssueParams<U>>(issue: I) {
+	addIssue<I extends IssueParams>(issue: I) {
 		this.issues.push({
 			...issue,
 			recieved: this.data,

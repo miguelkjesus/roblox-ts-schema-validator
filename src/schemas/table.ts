@@ -1,8 +1,8 @@
-import ErrorMessage from "helpers/error-message";
-import ParseContext from "helpers/parse-context";
-import factory from "helpers/factories";
+import { ErrorMessage } from "helpers/error-message";
+import { ParseContext } from "helpers/parse-context";
 
-import Schema from "./schema";
+import { Schema } from "./schema";
+import { Factory } from "helpers/factories";
 
 export class TableSchema extends Schema<object> {
 	private _invalidType = ErrorMessage.implement(({ data }) => `Expected table, recieved ${data}`);
@@ -22,5 +22,5 @@ export class TableSchema extends Schema<object> {
 	}
 }
 
-const tableConstructor = factory.constructor(TableSchema);
+const tableConstructor = Factory.schema(TableSchema);
 export { tableConstructor as table };
