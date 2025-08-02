@@ -1,18 +1,10 @@
-# @rbxts/rod
+# Roblox-ts schema validator (very catchy i know) (accepting alternative names)
 
-A runtime type-checking library for roblox-ts, inspired by Zod. Rod provides declarative schema validation with TypeScript type inference that compiles to Luau.
-
-## Installation
-
-```bash
-npm install @rbxts/rod
-```
+A runtime type-checking library for roblox-ts, inspired by Zod. It provides declarative schema validation with TypeScript type inference that compiles to Luau.
 
 ## Basic Usage
 
 ```typescript
-import r from "@rbxts/rod";
-
 // Define a schema
 const UserSchema = r.interface({
 	id: r.string(),
