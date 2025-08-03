@@ -5,7 +5,7 @@ import { Factory } from "helpers/factories";
 import { Schema } from "./schema";
 import { CommonErrorMessages } from "helpers/common-error-messages";
 
-export class EnumSchema<const T extends readonly [unknown, ...unknown[]]> extends Schema<T[number]> {
+export class EnumSchema<const T extends readonly [defined, ...defined[]]> extends Schema<T[number]> {
 	private readonly values: T;
 
 	private invalidEnumValueError?: ErrorMessage;
@@ -39,4 +39,4 @@ export class EnumSchema<const T extends readonly [unknown, ...unknown[]]> extend
 }
 
 const enumOf = Factory.schema(EnumSchema);
-export { enumOf as enum, enumOf };
+export { enumOf as enum };

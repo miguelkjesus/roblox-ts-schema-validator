@@ -1,11 +1,13 @@
 import { ErrorMessage } from "./error-message";
 
 const CommonErrorMessages = {
-	required: ErrorMessage.implement(() => "Required field is missing"),
+	required: ErrorMessage.implement("Required field is missing"),
 
 	notInteger: ErrorMessage.implement(({ data }) => `Expected integer, recieved ${data}`),
 
 	notFinite: ErrorMessage.implement(({ data }) => `Expected finite number, recieved ${data}`),
+
+	notANumber: ErrorMessage.implement("Expected a number, recieved nan"),
 
 	expectedType(expected: string) {
 		return ErrorMessage.implement(({ data }) => `Expected ${expected}, recieved ${typeOf(data)}`);
@@ -43,7 +45,7 @@ const CommonErrorMessages = {
 		);
 	},
 
-	expectedEnum(values: readonly unknown[]) {
+	expectedEnum(values: readonly defined[]) {
 		return ErrorMessage.implement(
 			({ data }) => `Expected one of [${(values as defined[]).map((v) => `${v}`).join(", ")}], recieved ${data}`,
 		);

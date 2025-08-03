@@ -7,7 +7,9 @@ import { Factory } from "helpers/factories";
 
 export class NumberSchema extends Schema<number> {
 	private _coerce = false;
+	private _allowNan = false;
 	private _invalidType = CommonErrorMessages.expectedType("number");
+	private _notANumber = CommonErrorMessages.notANumber;
 
 	protected preprocess(context: ParseContext) {
 		if (this._coerce) {
@@ -20,10 +22,22 @@ export class NumberSchema extends Schema<number> {
 				message: this._invalidType,
 			});
 		}
+
+		if (!this._allowNan && context.data !== context.data) {
+			context.addIssue({
+				type: "notANumber",
+				message: this._notANumber,
+			});
+		}
 	}
 
 	coerce() {
 		this._coerce = true;
+		return this;
+	}
+
+	allowNan() {
+		this._allowNan = true;
 		return this;
 	}
 
@@ -32,9 +46,17 @@ export class NumberSchema extends Schema<number> {
 		return this;
 	}
 
+	nan(message?: ErrorMessage) {
+		this._allowNan = false;
+		if (message !== undefined) {
+			this._notANumber = message;
+		}
+		return this;
+	}
+
 	// Validators
 
-	min(minimum: number, inclusive = true, message?: ErrorMessage<number>) {
+	private _min(minimum: number, inclusive = true, message?: ErrorMessage<number>) {
 		return this.use((ctx) => {
 			const valid = inclusive ? ctx.data >= minimum : ctx.data > minimum;
 			if (valid) return;
@@ -48,7 +70,19 @@ export class NumberSchema extends Schema<number> {
 		});
 	}
 
-	max(maximum: number, inclusive = true, message?: ErrorMessage<number>) {
+	gt(value: number, message?: ErrorMessage<number>) {
+		return this._min(value, false, message);
+	}
+
+	gte(value: number, message?: ErrorMessage<number>) {
+		return this._min(value, true, message);
+	}
+
+	min(minimum: number, message?: ErrorMessage<number>) {
+		return this.gte(minimum, message);
+	}
+
+	private _max(maximum: number, inclusive = true, message?: ErrorMessage<number>) {
 		return this.use((ctx) => {
 			const valid = inclusive ? ctx.data <= maximum : ctx.data < maximum;
 			if (valid) return;
@@ -60,6 +94,18 @@ export class NumberSchema extends Schema<number> {
 				max: maximum,
 			});
 		});
+	}
+
+	lt(value: number, message?: ErrorMessage<number>) {
+		return this._max(value, false, message);
+	}
+
+	lte(value: number, message?: ErrorMessage<number>) {
+		return this._max(value, true, message);
+	}
+
+	max(minimum: number, message?: ErrorMessage<number>) {
+		return this.lte(minimum, message);
 	}
 
 	integer(message?: ErrorMessage<number>) {
